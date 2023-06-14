@@ -14,7 +14,9 @@ namespace OrderManagement.Shared.Entities
         public string Flavor { get; set; }
         public string Description { get; set; }
         public int TypeProductId { get; set; }
+        public int OrderId { get; set; }
         public TypeProduct? TypeProduct { get; set; }
+        public Order? Order { get; set; }
 
     }
 }
