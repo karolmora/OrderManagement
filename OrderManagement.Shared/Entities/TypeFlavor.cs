@@ -14,5 +14,7 @@ namespace OrderManagement.Shared.Entities
         public int TypeProductId { get; set; }
         //Muchos sabores pertenecen a un solo tipo de producto
         public TypeProduct? TypeProduct { get; set; }
+
+        public ICollection<Product> Product { get; set; }
     }
 }

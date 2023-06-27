@@ -10,13 +10,10 @@ namespace OrderManagement.Shared.Entities
     {
         public int Id { get; set; }
         public string Size { get; set; }
-        public double ValueProduct { get; set; }
-        public string Flavor { get; set; }
-        public string Description { get; set; }
-        public int TypeProductId { get; set; }
-        public int OrderId { get; set; }
-        public TypeProduct? TypeProduct { get; set; }
-        public Order? Order { get; set; }
-
+        public double Value { get; set; }
+        // FK de flavor
+        public int TypeFlavorId { get; set; }
+        public TypeFlavor? TypeFlavor { get; set; }
+        public ICollection<Order> Order { get; set;}
     }
 }

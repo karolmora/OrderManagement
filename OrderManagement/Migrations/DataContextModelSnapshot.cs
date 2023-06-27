@@ -33,6 +33,9 @@ namespace OrderManagement.API.Migrations
                     b.Property<DateTime>("DateBill")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
                     b.Property<double>("Pass")
                         .HasColumnType("float");
 
@@ -46,6 +49,8 @@ namespace OrderManagement.API.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("PaymentTypeId");
 
@@ -85,10 +90,18 @@ namespace OrderManagement.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BillId")
+                    b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CustomerId")
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Flavor")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int?>("Status")
@@ -99,9 +112,9 @@ namespace OrderManagement.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BillId");
-
                     b.HasIndex("CustomerId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Order");
                 });
@@ -131,32 +144,19 @@ namespace OrderManagement.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Flavor")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Size")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TypeProductId")
+                    b.Property<int>("TypeFlavorId")
                         .HasColumnType("int");
 
-                    b.Property<double>("ValueProduct")
+                    b.Property<double>("Value")
                         .HasColumnType("float");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("TypeProductId");
+                    b.HasIndex("TypeFlavorId");
 
                     b.ToTable("Product");
                 });
@@ -202,51 +202,51 @@ namespace OrderManagement.API.Migrations
 
             modelBuilder.Entity("OrderManagement.Shared.Entities.Bill", b =>
                 {
+                    b.HasOne("OrderManagement.Shared.Entities.Order", "Order")
+                        .WithMany("Bill")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("OrderManagement.Shared.Entities.PaymentType", "PaymentType")
                         .WithMany("Bill")
                         .HasForeignKey("PaymentTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Order");
+
                     b.Navigation("PaymentType");
                 });
 
             modelBuilder.Entity("OrderManagement.Shared.Entities.Order", b =>
                 {
-                    b.HasOne("OrderManagement.Shared.Entities.Bill", "Bill")
-                        .WithMany("Order")
-                        .HasForeignKey("BillId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("OrderManagement.Shared.Entities.Customer", "Customer")
                         .WithMany("Order")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Bill");
+                    b.HasOne("OrderManagement.Shared.Entities.Product", "Product")
+                        .WithMany("Order")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Customer");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("OrderManagement.Shared.Entities.Product", b =>
                 {
-                    b.HasOne("OrderManagement.Shared.Entities.Order", "Order")
+                    b.HasOne("OrderManagement.Shared.Entities.TypeFlavor", "TypeFlavor")
                         .WithMany("Product")
-                        .HasForeignKey("OrderId")
+                        .HasForeignKey("TypeFlavorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OrderManagement.Shared.Entities.TypeProduct", "TypeProduct")
-                        .WithMany("Product")
-                        .HasForeignKey("TypeProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("TypeProduct");
+                    b.Navigation("TypeFlavor");
                 });
 
             modelBuilder.Entity("OrderManagement.Shared.Entities.TypeFlavor", b =>
@@ -260,11 +260,6 @@ namespace OrderManagement.API.Migrations
                     b.Navigation("TypeProduct");
                 });
 
-            modelBuilder.Entity("OrderManagement.Shared.Entities.Bill", b =>
-                {
-                    b.Navigation("Order");
-                });
-
             modelBuilder.Entity("OrderManagement.Shared.Entities.Customer", b =>
                 {
                     b.Navigation("Order");
@@ -272,7 +267,7 @@ namespace OrderManagement.API.Migrations
 
             modelBuilder.Entity("OrderManagement.Shared.Entities.Order", b =>
                 {
-                    b.Navigation("Product");
+                    b.Navigation("Bill");
                 });
 
             modelBuilder.Entity("OrderManagement.Shared.Entities.PaymentType", b =>
@@ -280,10 +275,18 @@ namespace OrderManagement.API.Migrations
                     b.Navigation("Bill");
                 });
 
-            modelBuilder.Entity("OrderManagement.Shared.Entities.TypeProduct", b =>
+            modelBuilder.Entity("OrderManagement.Shared.Entities.Product", b =>
+                {
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("OrderManagement.Shared.Entities.TypeFlavor", b =>
                 {
                     b.Navigation("Product");
+                });
 
+            modelBuilder.Entity("OrderManagement.Shared.Entities.TypeProduct", b =>
+                {
                     b.Navigation("TypeFlavors");
                 });
 #pragma warning restore 612, 618

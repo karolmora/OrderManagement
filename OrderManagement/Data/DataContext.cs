@@ -12,13 +12,15 @@ namespace OrderManagement.API.Data
 
         }
 
-        public DbSet<TypeFlavor> TypeFlavor { get; set; }
         public DbSet<TypeProduct> TypeProduct { get; set; }
+        public DbSet<TypeFlavor> TypeFlavor { get; set; }
         public DbSet<Product> Product { get; set; }
+        public DbSet<PaymentType> PaymentType { get; set; }
         public DbSet<Customer> Customer { get; set; }
         public DbSet<Order> Order { get; set; }
         public DbSet<Bill> Bill { get; set; }
-        public DbSet<PaymentType> PaymentType { get; set; }
+
+
 
 
 

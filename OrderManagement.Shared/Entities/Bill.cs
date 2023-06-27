@@ -16,7 +16,9 @@ namespace OrderManagement.Shared.Entities
         public int PaymentTypeId { get; set; }
         public StatusBill? Status { get; set; }
         public PaymentType? PaymentType { get; set; }
-        public ICollection<Order> Order{ get; set; }
+        public int OrderId { get; set; }
+        public Order? Order { get; set; }
+
 
     }
 }
