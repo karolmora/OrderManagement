@@ -25,9 +25,8 @@ namespace OrderManagement.API.Data
                 _context.TypeProduct.Add(new TypeProduct { Description = "Hamburguesa" });
                 _context.TypeProduct.Add(new TypeProduct { Description = "Lasaña" });
                 _context.TypeProduct.Add(new TypeProduct { Description = "Panzerotti" });
-                _context.TypeProduct.Add(new TypeProduct { Description = "Agua" });
-                _context.TypeProduct.Add(new TypeProduct { Description = "Club dorada" });
-                _context.TypeProduct.Add(new TypeProduct { Description = "Mora" });
+                _context.TypeProduct.Add(new TypeProduct { Description = "Bebida" });
+
 
                 await _context.SaveChangesAsync();
 
