@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace OrderManagement.Shared.DTOs
 {
-    public class TypeProductDTO
+    public class TypePaymentDTO
     {
-        public int Id { get; set; } 
+        public int Id { get; set; }
         public string Description { get; set; }
-
     }
 }
